@@ -2,7 +2,6 @@
   "name": "cross_border_payment",
   "version": "1.0.0",
   "description": "ccp",
-  "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -19,12 +18,14 @@
   },
   "homepage": "https://github.com/VSPOOVENDHIRAN/border-cross-payment#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.90.1",
     "body-parser": "^2.2.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "multer": "^2.0.2",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "postgres": "^3.4.8"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
