@@ -1,7 +1,50 @@
 const sql = require("../config/db.js");
 const pool = require("../config/db.js");
-const supabase = require("../config/supabase.js");
+const supabaseAdmin = require("../config/supabase.js");
 const path = require("path");
+const { sendPasswordSetupEmail } = require("../config/mailer");
+
+
+async function createUserAndSendPasswordLink(email) {
+  if (!email) {
+    throw new Error("Email is required");
+  }
+
+  // 1️⃣ Create user in Supabase Auth
+  console.log("Creating user in Supabase Auth for email:", email);
+  const { error: createError } =
+    await supabaseAdmin.auth.admin.createUser({
+      email,
+      email_confirm: true,
+    });
+
+  if (createError) {
+    throw new Error(createError.message);
+  }
+   console.log("User created successfully in Supabase Auth.");
+  // 2️⃣ Generate recovery link
+  const { data, error } =
+    await supabaseAdmin.auth.admin.generateLink({
+      type: "recovery",
+      email,
+      options: {
+        redirectTo: "http://localhost:3000/set-password",
+      },
+    });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const resetLink = data.properties.action_link;
+
+  console.log("Generated password setup link:", resetLink);
+
+  // 3️⃣ Send email manually
+  await sendPasswordSetupEmail(email, resetLink);
+
+  return true;
+}
 
 const registerHospitalRequest = async (req, res) => {
   try {
@@ -174,6 +217,7 @@ function generateHospitalRefCode(country, city, hospitalName, seq) {
 //changed update to sql\
  const updateRequestStatus = async (req, res) => {
   try {
+    console.log("Updating request status...");
     const { id } = req.params;
     const { status, reviewed_by } = req.body;
 
@@ -210,6 +254,14 @@ function generateHospitalRefCode(country, city, hospitalName, seq) {
 
       // ❌ Stop here if rejected
       if (status === "rejected") {
+      //   await tx`
+      //   UPDATE hospital_requests
+      //   SET
+      //     request_status = ${status},
+      //     reviewed_by = ${reviewed_by},
+      //     reviewed_at = NOW()
+      //   WHERE id = ${id}
+      // `;
         return { rejected: true };
       }
 
@@ -234,6 +286,8 @@ function generateHospitalRefCode(country, city, hospitalName, seq) {
           request.hospital_name,
           count + 1
         );
+
+        console.log(`Attempt ${attempt}: Trying refCode ${refCode}`);
 
         try {
           const hospitals = await tx`
@@ -276,7 +330,7 @@ function generateHospitalRefCode(country, city, hospitalName, seq) {
             )
             RETURNING *
           `;
-
+          console.log("Hospital inserted with refCode:", refCode);
           hospital = hospitals[0];
           break; // ✅ success
 
@@ -301,6 +355,9 @@ function generateHospitalRefCode(country, city, hospitalName, seq) {
         message: "Hospital request rejected successfully",
       });
     }
+    
+    await createUserAndSendPasswordLink(result.request.official_email);
+    
 
     res.json({
       message: "Hospital approved successfully",
@@ -766,3 +823,4 @@ module.exports = {
   addHospitalSettlementAccount,
   updateHospitalSettlementAccount
 };
+
