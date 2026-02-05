@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Registration - Healthcare Coordination Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="index.html" class="navbar-brand">
+                <span class="navbar-brand-icon">🏥</span>
+                Healthcare Coordination Platform
+            </a>
+            <ul class="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="register.html" class="navbar-link active">Register Hospital</a></li>
+                <li><a href="login.html" class="navbar-link">Login</a></li>
+                <li><a href="admin.html" class="navbar-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Registration Form -->
+    <section class="section">
+        <div class="container">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="card fade-in-up">
+                    <div class="card-header">
+                        <h2 class="card-title">Hospital Registration</h2>
+                        <p class="card-subtitle">Register your hospital to join our cross-border emergency medical
+                            payment network</p>
+                    </div>
+
+                    <div class="card-body">
+                        <form id="registration-form">
+                            <!-- Hospital Information -->
+                            <h3 class="mb-3">Hospital Information</h3>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="hospital_name">Hospital Name</label>
+                                    <input type="text" id="hospital_name" name="hospital_name" class="form-input"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="hospital_type">Hospital Type</label>
+                                    <select id="hospital_type" name="hospital_type" class="form-select" required>
+                                        <option value="">Select Type</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="ownership_type">Ownership Type</label>
+                                    <select id="ownership_type" name="ownership_type" class="form-select" required>
+                                        <option value="">Select Ownership</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="registration_number">Registration
+                                        Number</label>
+                                    <input type="text" id="registration_number" name="registration_number"
+                                        class="form-input" required>
+                                </div>
+                            </div>
+
+                            <!-- Location Information -->
+                            <h3 class="mb-3 mt-4">Location Information</h3>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="country">Country</label>
+                                    <select id="country" name="country" class="form-select" required>
+                                        <option value="">Select Country</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="state">State/Province</label>
+                                    <input type="text" id="state" name="state" class="form-input" required>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label" for="city">City</label>
+                                    <input type="text" id="city" name="city" class="form-input">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="postal_code">Postal Code</label>
+                                    <input type="text" id="postal_code" name="postal_code" class="form-input">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label required" for="address">Full Address</label>
+                                <textarea id="address" name="address" class="form-textarea" required></textarea>
+                            </div>
+
+                            <!-- Contact Information -->
+                            <h3 class="mb-3 mt-4">Contact Information</h3>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="official_email">Official Email</label>
+                                    <input type="email" id="official_email" name="official_email" class="form-input"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="official_phone">Official Phone</label>
+                                    <input type="tel" id="official_phone" name="official_phone" class="form-input"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="website">Website</label>
+                                <input type="url" id="website" name="website" class="form-input" placeholder="https://">
+                            </div>
+
+                            <!-- Admin Information -->
+                            <h3 class="mb-3 mt-4">Administrator Information</h3>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="admin_name">Admin Name</label>
+                                    <input type="text" id="admin_name" name="admin_name" class="form-input" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="admin_contact">Admin Contact</label>
+                                    <input type="tel" id="admin_contact" name="admin_contact" class="form-input"
+                                        required>
+                                </div>
+                            </div>
+
+                            <!-- Registration Certificate -->
+                            <h3 class="mb-3 mt-4">Registration Certificate</h3>
+
+                            <div class="form-group">
+                                <label class="form-label required">Upload Registration Certificate</label>
+                                <div class="form-file" id="file-upload-area">
+                                    <input type="file" id="registration_certificate" name="registration_certificate"
+                                        accept=".pdf,.jpg,.jpeg,.png" required>
+                                    <div class="file-upload-content">
+                                        <p style="margin: 0; color: var(--text-secondary);">
+                                            📄 Click to upload or drag and drop
+                                        </p>
+                                        <p style="margin: 0.5rem 0 0 0; font-size: 0.75rem; color: var(--text-light);">
+                                            PDF, JPG, or PNG (Max 5MB)
+                                        </p>
+                                    </div>
+                                    <div id="file-name" class="hidden"
+                                        style="margin-top: 0.5rem; color: var(--success-color); font-weight: 500;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Consent -->
+                            <div class="form-group mt-4">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="consent_given" name="consent_given" required>
+                                    <span>I consent to the processing of this information and confirm that all details
+                                        provided are accurate.</span>
+                                </label>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="form-group mt-4">
+                                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                                    Submit Registration Request
+                                </button>
+                            </div>
+
+                            <p class="text-center mt-3" style="color: var(--text-light); font-size: 0.875rem;">
+                                Already registered? <a href="login.html">Login here</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/register.js"></script>
+</body>
+
+</html>

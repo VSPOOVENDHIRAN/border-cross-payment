@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Healthcare Coordination Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="index.html" class="navbar-brand">
+                <span class="navbar-brand-icon">🏥</span>
+                Healthcare Coordination Platform
+            </a>
+            <ul class="navbar-menu">
+                <li><a href="index.html" class="navbar-link">Home</a></li>
+                <li><a href="admin.html" class="navbar-link active">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Admin Panel -->
+    <section class="section">
+        <div class="container">
+            <div class="fade-in-down mb-4">
+                <h1 class="mb-2">Admin Panel</h1>
+                <p class="text-secondary">Review and approve hospital registration requests</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-3 mb-4 stagger-fade-in">
+                <div class="card" style="background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%); color: white;">
+                    <h3 style="color: white; margin: 0; font-size: 2rem;" id="pending-count">0</h3>
+                    <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Pending Requests</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, #00c853 0%, #00a844 100%); color: white;">
+                    <h3 style="color: white; margin: 0; font-size: 2rem;" id="approved-count">0</h3>
+                    <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Approved</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, #ef5350 0%, #e53935 100%); color: white;">
+                    <h3 style="color: white; margin: 0; font-size: 2rem;" id="rejected-count">0</h3>
+                    <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Rejected</p>
+                </div>
+            </div>
+
+            <!-- Pending Requests -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Pending Hospital Requests</h2>
+                    <p class="card-subtitle">Review and approve or reject hospital registration requests</p>
+                </div>
+
+                <div class="card-body">
+                    <div id="loading" class="text-center p-4">
+                        <div class="spinner" style="margin: 0 auto;"></div>
+                        <p class="mt-2">Loading requests...</p>
+                    </div>
+
+                    <div id="requests-list" class="hidden"></div>
+
+                    <div id="empty-state" class="hidden text-center p-4" style="color: var(--text-light);">
+                        <p style="font-size: 3rem; margin: 0;">✓</p>
+                        <p>No pending requests</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificate Modal -->
+    <div id="certificate-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 900px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Registration Certificate</h3>
+                <button class="modal-close" onclick="closeCertificateModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="certificate-content" style="text-align: center;">
+                    <p>Loading certificate...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeCertificateModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

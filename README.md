@@ -158,7 +158,7 @@ cd frontend
 **Or** double-click `frontend/index.html` to open it in your default browser.
 
 ---
-
+admin: poovu@gmail.com 12345678
 ## 🌐 Using the Dashboard
 
 ### 1️⃣ **Hospital Registration Card**

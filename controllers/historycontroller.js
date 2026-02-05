@@ -5,56 +5,50 @@ const path = require("path");
 
 const getEmergencyCasesByHospital = async (req, res) => {
   try {
-    // 🔐 identity injected by auth middleware
-    console.log("Request identity:", req.identity);
-    const { identity } = req;
-    console.log("Resolved identity:", identity);
-    if (!identity || identity.type !== "HOSPITAL_ADMIN") {
-      return res.status(403).json({
-        error: "Only hospital admins can access emergency cases",
+    const { auth_user_id } = req.user;
+
+    // 1️⃣ Fetch hospital to get hospital_ref_code
+    const hospitals = await sql`
+      SELECT hospital_ref_code
+      FROM public.hospitals
+      WHERE auth_user_id = ${auth_user_id}
+      LIMIT 1
+    `;
+
+    if (hospitals.length === 0) {
+      return res.status(404).json({
+        error: "Hospital record not found for this user",
       });
     }
 
-    const hospitalRefCode = identity.hospital_ref_code;
+    const hospitalRefCode = hospitals[0].hospital_ref_code;
 
     console.log("Fetching emergency cases for hospital:", hospitalRefCode);
 
-    const { data, error } = await supabase
-  .from("emergency_cases")
-  .select(`
-    emergency_id,
-    status,
-    source_hospital_ref_code,
-    source_country,
-    destination_hospital_ref_code,
-    destination_country,
-    patient_age,
-    patient_gender,
-    primary_diagnosis_code,
-    urgency_level,
-    life_threatening,
-    estimated_treatment_cost,
-    currency,
-    created_at
-  `)
-  .or(
-    `source_hospital_ref_code.eq."${hospitalRefCode}"`
-  )
-
-  //destination_hospital_ref_code.eq."${hospitalRefCode}"`
-  
-  .order("created_at", { ascending: false });
-
-     console.log("Supabase response data:", data);
-    if (error) {
-      console.error("Supabase error:", error.message);
-      return res.status(500).json({ error: error.message });
-    }
+    const emergencies = await sql`
+      SELECT
+        emergency_id,
+        status,
+        source_country,
+        destination_hospital_ref_code,
+        destination_country,
+        patient_age,
+        patient_gender,
+        primary_diagnosis_code,
+        urgency_level,
+        life_threatening,
+        estimated_treatment_cost,
+        currency,
+        created_at
+      FROM public.emergency_cases
+      WHERE source_hospital_ref_code = ${hospitalRefCode}
+      ORDER BY created_at DESC
+    `;
 
     return res.status(200).json({
       hospital_ref_code: hospitalRefCode,
-      count: data.length,
-      emergencies: data,
+      count: emergencies.length,
+      emergencies: emergencies,
     });
   } catch (err) {
     console.error("Fetch emergency cases error:", err);

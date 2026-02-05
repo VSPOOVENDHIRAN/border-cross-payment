@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Dashboard - Healthcare Coordination Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="index.html" class="navbar-brand">
+                <span class="navbar-brand-icon">🏥</span>
+                Healthcare Coordination Platform
+            </a>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html" class="navbar-link active">Dashboard</a></li>
+                <li><a href="#" class="navbar-link" id="logout-btn">Logout</a></li>
+                <li id="user-display"></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <section class="section">
+        <div class="container">
+            <div class="fade-in-down">
+                <h1 class="mb-2">Hospital Dashboard</h1>
+                <p class="text-secondary mb-4">Manage emergency cases and settlement accounts</p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-3 mb-4 stagger-fade-in">
+                <div class="card" style="background: linear-gradient(135deg, #0066cc 0%, #004c99 100%); color: white;">
+                    <h3 style="color: white; margin: 0; font-size: 2rem;" id="total-cases">0</h3>
+                    <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Total Cases</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, #00c853 0%, #00a844 100%); color: white;">
+                    <h3 style="color: white; margin: 0; font-size: 2rem;" id="active-cases">0</h3>
+                    <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Active Cases</p>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, #00a8cc 0%, #007a99 100%); color: white;">
+                    <h3 style="color: white; margin: 0; font-size: 2rem;" id="settlement-status">Pending</h3>
+                    <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Settlement Account</p>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="card mb-4">
+                <div class="flex gap-2 mb-3"
+                    style="border-bottom: 2px solid var(--border-color); padding-bottom: 1rem;">
+                    <button class="btn btn-primary tab-btn active" data-tab="create-case">Create Emergency Case</button>
+                    <button class="btn btn-outline tab-btn" data-tab="settlement">Settlement Account</button>
+                    <button class="btn btn-outline tab-btn" data-tab="history">Emergency History</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div id="tab-content">
+                    <!-- Create Emergency Case Tab -->
+                    <div class="tab-pane active" id="create-case-tab">
+                        <h3 class="mb-3">Create New Emergency Case</h3>
+                        <form id="emergency-form">
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="source_country">Source Country</label>
+                                    <select id="source_country" name="source_country" class="form-select" required>
+                                        <option value="">Select Country</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="destination_country">Destination
+                                        Country</label>
+                                    <select id="destination_country" name="destination_country" class="form-select"
+                                        required>
+                                        <option value="">Select Country</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label required" for="destination_hospital_ref_code">Destination
+                                    Hospital Reference Code</label>
+                                <input type="text" id="destination_hospital_ref_code"
+                                    name="destination_hospital_ref_code" class="form-input" required>
+                                <span class="form-help">Enter the reference code of the destination hospital</span>
+                            </div>
+
+                            <h4 class="mt-4 mb-3">Patient Information</h4>
+                            <div class="grid grid-3">
+                                <div class="form-group">
+                                    <label class="form-label required" for="patient_age">Age</label>
+                                    <input type="number" id="patient_age" name="patient_age" class="form-input" min="0"
+                                        max="150" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="patient_gender">Gender</label>
+                                    <select id="patient_gender" name="patient_gender" class="form-select" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="patient_nationality">Nationality</label>
+                                    <input type="text" id="patient_nationality" name="patient_nationality"
+                                        class="form-input" required>
+                                </div>
+                            </div>
+
+                            <h4 class="mt-4 mb-3">Medical Information</h4>
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="primary_diagnosis_code">Primary Diagnosis
+                                        Code</label>
+                                    <input type="text" id="primary_diagnosis_code" name="primary_diagnosis_code"
+                                        class="form-input" required>
+                                    <span class="form-help">ICD-10 or similar code</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="diagnosis_code_system">Diagnosis Code
+                                        System</label>
+                                    <select id="diagnosis_code_system" name="diagnosis_code_system" class="form-select"
+                                        required>
+                                        <option value="">Select System</option>
+                                        <option value="ICD-10">ICD-10</option>
+                                        <option value="ICD-11">ICD-11</option>
+                                        <option value="SNOMED-CT">SNOMED-CT</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="urgency_level">Urgency Level</label>
+                                    <select id="urgency_level" name="urgency_level" class="form-select" required>
+                                        <option value="">Select Level</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="treatment_complexity">Treatment
+                                        Complexity</label>
+                                    <select id="treatment_complexity" name="treatment_complexity" class="form-select"
+                                        required>
+                                        <option value="">Select Complexity</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="life_threatening" name="life_threatening">
+                                    <span>Life Threatening Condition</span>
+                                </label>
+                            </div>
+
+                            <h4 class="mt-4 mb-3">Clinical Status</h4>
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="consciousness_status">Consciousness
+                                        Status</label>
+                                    <select id="consciousness_status" name="consciousness_status" class="form-select"
+                                        required>
+                                        <option value="">Select Status</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="airway_status">Airway Status</label>
+                                    <select id="airway_status" name="airway_status" class="form-select" required>
+                                        <option value="">Select Status</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="breathing_status">Breathing Status</label>
+                                    <select id="breathing_status" name="breathing_status" class="form-select" required>
+                                        <option value="">Select Status</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="circulation_status">Circulation
+                                        Status</label>
+                                    <select id="circulation_status" name="circulation_status" class="form-select"
+                                        required>
+                                        <option value="">Select Status</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h4 class="mt-4 mb-3">Treatment & Cost</h4>
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="primary_procedure_code">Primary Procedure
+                                        Code</label>
+                                    <input type="text" id="primary_procedure_code" name="primary_procedure_code"
+                                        class="form-input" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="procedure_code_system">Procedure Code
+                                        System</label>
+                                    <select id="procedure_code_system" name="procedure_code_system" class="form-select"
+                                        required>
+                                        <option value="">Select System</option>
+                                        <option value="CPT">CPT</option>
+                                        <option value="ICD-10-PCS">ICD-10-PCS</option>
+                                        <option value="SNOMED-CT">SNOMED-CT</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="required_specialty">Required
+                                        Specialty</label>
+                                    <select id="required_specialty" name="required_specialty" class="form-select"
+                                        required>
+                                        <option value="">Select Specialty</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="automation_justification_code">Automation
+                                        Justification</label>
+                                    <select id="automation_justification_code" name="automation_justification_code"
+                                        class="form-select" required>
+                                        <option value="">Select Justification</option>
+                                        <option value="LIFE_THREATENING">Life Threatening</option>
+                                        <option value="TIME_CRITICAL">Time Critical</option>
+                                        <option value="SPECIALIST_UNAVAILABLE">Specialist Unavailable</option>
+                                        <option value="EQUIPMENT_UNAVAILABLE">Equipment Unavailable</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="estimated_treatment_cost">Estimated
+                                        Treatment Cost</label>
+                                    <input type="number" id="estimated_treatment_cost" name="estimated_treatment_cost"
+                                        class="form-input" step="0.01" min="0" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="currency">Currency</label>
+                                    <select id="currency" name="currency" class="form-select" required>
+                                        <option value="">Select Currency</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h4 class="mt-4 mb-3">Consent</h4>
+                            <div class="form-group">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="emergency_override_consent"
+                                        name="emergency_override_consent" required>
+                                    <span>I confirm emergency override consent for automated processing</span>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label required" for="consent_reason">Consent Reason</label>
+                                <textarea id="consent_reason" name="consent_reason" class="form-textarea"
+                                    required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label required" for="created_by">Created By (Your Name)</label>
+                                <input type="text" id="created_by" name="created_by" class="form-input" required>
+                            </div>
+
+                            <div class="form-group mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">Create Emergency Case</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Settlement Account Tab -->
+                    <div class="tab-pane hidden" id="settlement-tab">
+                        <h3 class="mb-3">Settlement Account Management</h3>
+
+                        <div id="settlement-info" class="hidden mb-4">
+                            <div class="alert alert-info">
+                                <strong>Current Settlement Account</strong>
+                                <div id="current-account-details" class="mt-2"></div>
+                            </div>
+                        </div>
+
+                        <form id="settlement-form">
+                            <h4 class="mb-3">Bank Account Details</h4>
+
+                            <div class="form-group">
+                                <label class="form-label required" for="account_holder_name">Account Holder Name</label>
+                                <input type="text" id="account_holder_name" name="account_holder_name"
+                                    class="form-input" required>
+                            </div>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="bank_name">Bank Name</label>
+                                    <input type="text" id="bank_name" name="bank_name" class="form-input" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="account_number">Account Number</label>
+                                    <input type="text" id="account_number" name="account_number" class="form-input"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-2">
+                                <div class="form-group">
+                                    <label class="form-label required" for="account_currency">Currency</label>
+                                    <select id="account_currency" name="currency" class="form-select" required>
+                                        <option value="">Select Currency</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label required" for="account_country">Country</label>
+                                    <select id="account_country" name="country" class="form-select" required>
+                                        <option value="">Select Country</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <h4 class="mt-4 mb-3">Additional Codes (Optional)</h4>
+                            <div class="grid grid-3">
+                                <div class="form-group">
+                                    <label class="form-label" for="ifsc_code">IFSC Code</label>
+                                    <input type="text" id="ifsc_code" name="ifsc_code" class="form-input">
+                                    <span class="form-help">For Indian banks</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="swift_code">SWIFT Code</label>
+                                    <input type="text" id="swift_code" name="swift_code" class="form-input">
+                                    <span class="form-help">For international transfers</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="iban">IBAN</label>
+                                    <input type="text" id="iban" name="iban" class="form-input">
+                                    <span class="form-help">For European banks</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg" id="settlement-submit-btn">Add
+                                    Settlement Account</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Emergency History Tab -->
+                    <div class="tab-pane hidden" id="history-tab">
+                        <h3 class="mb-3">Emergency Case History</h3>
+
+                        <div id="history-loading" class="text-center p-4">
+                            <div class="spinner" style="margin: 0 auto;"></div>
+                            <p class="mt-2">Loading emergency cases...</p>
+                        </div>
+
+                        <div id="history-content" class="hidden">
+                            <div id="history-list"></div>
+                        </div>
+
+                        <div id="history-empty" class="hidden text-center p-4" style="color: var(--text-light);">
+                            <p style="font-size: 3rem; margin: 0;">📋</p>
+                            <p>No emergency cases found</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

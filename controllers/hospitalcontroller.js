@@ -168,11 +168,11 @@ function generateHospitalRefCode(country, city, hospitalName, seq) {
     .substring(0, 3)
     .toUpperCase();
 
-  return `${country}-${city.substring(0,3).toUpperCase()}-${shortName}-${String(seq).padStart(2, "0")}`;
+  return `${country}-${city.substring(0, 3).toUpperCase()}-${shortName}-${String(seq).padStart(2, "0")}`;
 }
 
 //changed update to sql\
- const updateRequestStatus = async (req, res) => {
+const updateRequestStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, reviewed_by } = req.body;
@@ -216,7 +216,7 @@ function generateHospitalRefCode(country, city, hospitalName, seq) {
       // 3️⃣ Insert hospital with UNIQUE hospital_ref_code
       let hospital;
       let attempt = 0;
-     console.log("Generating unique hospital_ref_code...");
+      console.log("Generating unique hospital_ref_code...");
       while (attempt < 5) {
         attempt++;
 
@@ -324,8 +324,7 @@ const getHospitalRequests = async (req, res) => {
       return res.status(400).json({ error: "Invalid request status" });
     }
 
-    const result = await pool.query(
-      `
+    const rows = await sql`
       SELECT 
         id,
         hospital_name,
@@ -347,16 +346,14 @@ const getHospitalRequests = async (req, res) => {
         registration_certificate_url,
         created_at
       FROM hospital_requests
-      WHERE request_status = $1
+      WHERE request_status = ${status}
       ORDER BY created_at DESC
-      `,
-      [status]
-    );
+    `;
 
     res.status(200).json({
-      total: result.rows.length,
+      total: rows.length,
       status,
-      requests: result.rows,
+      requests: rows,
     });
 
   } catch (err) {
@@ -368,7 +365,7 @@ const getHospitalRequests = async (req, res) => {
 
 
 
-  const getPendingRequests = async (req, res) => {
+const getPendingRequests = async (req, res) => {
   try {
     const rows = await sql`
       SELECT
@@ -438,7 +435,7 @@ const createEmergencyCase = async (req, res) => {
       consent_reason,
       created_by
     } = req.body;
-     
+
     console.log("Creating emergency case 1...");
     // 🔒 Mandatory consent check (automation-safe)
     if (emergency_override_consent !== true && emergency_override_consent !== "true") {
@@ -562,12 +559,12 @@ const addHospitalSettlementAccount = async (req, res) => {
     }
 
     /* ---------------- FETCH HOSPITAL ---------------- */
-     console.log(auth_user_id); 
+    console.log(auth_user_id);
 
     const hospital = await sql`
       SELECT id
       FROM public.hospitals
-      WHERE auth_user_id = ${"9211f387-becb-47cd-9297-6af353b95e41"}
+      WHERE auth_user_id = ${auth_user_id}
       LIMIT 1
     `;
 
@@ -684,7 +681,7 @@ const updateHospitalSettlementAccount = async (req, res) => {
         AND is_primary = true
       LIMIT 1
     `;
-    
+
     console.log("Settlement account fetched:", account);
 
     if (account.length === 0) {
@@ -733,7 +730,7 @@ const updateHospitalSettlementAccount = async (req, res) => {
     }
 
     /* ---------------- EXECUTE UPDATE ---------------- */
-     console.log("Executing update...", updates);
+    console.log("Executing update...", updates);
     const updated = await sql`
       UPDATE public.hospital_settlement_accounts
       SET ${sql(updates)}, updated_at = now()
@@ -756,7 +753,7 @@ const updateHospitalSettlementAccount = async (req, res) => {
 };
 
 //module.exports = { createEmergencyCase };
- 
+
 module.exports = {
   registerHospitalRequest,
   getHospitalRequests,
